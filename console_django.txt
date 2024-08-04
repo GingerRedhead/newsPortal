@@ -1,0 +1,84 @@
+Импортируем
+from news.models import *
+from django.contrib.auth.models import User
+
+Добвляем пользователей
+u1 = User.objects.create_user('rom1')
+u2 = User.objects.create_user('rom2')
+a1 = Author.objects.create(author = u1)
+a2 = Author.objects.create(author = u2)
+
+Добавляем категории
+cat1 = Category.objects.create(category = 'Наука')
+cat2 = Category.objects.create(category = 'Спорт')
+cat3 = Category.objects.create(category = 'Киберспорт')
+cat4 = Category.objects.create(category = 'Психология')
+
+Добавляем посты
+p1 = Post.objects.create(author = a1, post_type = 'post', post_name = 'Название статьи 1', post_body= 'Текст_статьи_1_Текст_статьи_1_Текст_статьи_1_Текст_статьи_1_Текст_статьи_1_Текст_статьи_1_Текст_статьи_1_Текст_статьи_1_Текст_статьи_1_Текст_статьи_1_')
+p2 = Post.objects.create(author = a1, post_type = 'post', post_name = 'Название статьи 2', post_body= 'Текст_статьи_2_Текст_статьи_2_Текст_статьи_2_Текст_статьи_2_Текст_статьи_2_Текст_статьи_2_Текст_статьи_2_Текст_статьи_2_Текст_статьи_2_Текст_статьи_2_')
+p3 = Post.objects.create(author = a1, post_type = 'news', post_name = 'Новость1 1', post_body= 'Текст_новости_1_Текст_новости_1_Текст_новости_1_Текст_новости_1_Текст_новости_1_')
+Добавляем посты в категории
+p1.categories.add(cat1)
+p1.categories.add(cat2)
+p2.categories.add(cat2)
+p2.categories.add(cat3)
+p3.categories.add(cat3)
+p3.categories.add(cat4)
+
+Добавляем комментарии
+com1 = Comment.objects.create(post=p1, user = u1, text = 'Первый')
+com2 = Comment.objects.create(post=p1, user = u2, text = 'Второй')
+com3 = Comment.objects.create(post=p1, user = u1, text = 'Третий')
+com4 = Comment.objects.create(post=p1, user = u2, text = 'Четвёртый')
+
+com5 = Comment.objects.create(post=p2, user = u1, text = 'Пятый')
+com6 = Comment.objects.create(post=p2, user = u2, text =  'Шестой')
+com7 = Comment.objects.create(post=p2, user = u1, text = 'Седьмой')
+com8 = Comment.objects.create(post=p2, user = u2, text =  'восьмой')
+
+com9 = Comment.objects.create(post=p3, user = u1, text = 'Девятый')
+com10 = Comment.objects.create(post=p3, user = u2, text = 'Десятый')
+com11 = Comment.objects.create(post=p3, user = u1, text = 'Одиннадцатый')
+com12 = Comment.objects.create(post=p3, user = u2, text = 'Двенадцатый')
+
+Лайкаем посты
+p1.like()
+p2.like()
+p2.like()
+p2.like()
+p2.like()
+p2.like()
+p2.like()
+
+Лайкаем комментарии
+com1.like()
+com2.like()
+com2.like()
+
+com3.like()
+com3.like()
+com3.like()
+
+Обновляем рейтинги
+a1.update_raiting()
+a2.update_raiting()
+
+Username и рейтинг лучшего пользователя
+rating = Author.objects.order_by('-raiting').first().raiting
+best_author = Author.objects.order_by('-raiting').first()
+
+print(User.objects.filter(author = (Author.objects.order_by('-raiting').first())).first(), Post.objects.order_by('-raiting').first().raiting)
+
+Найти лучшую статью
+best_post = Post.objects.order_by('-raiting').first()
+print(best_post.datetime_in.strftime('%d-%m-%Y'), User.objects.filter(author  = best_author).first(), best_post.raiting, best_post.post_name, best_post.preview())
+и Вывести дату добавления
+username автора,
+рейтинг, заголовок и превью основываясь на лайках/дислайках к этой статье.
+
+
+Вывести Все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
+comments = Comment.objects.filter(post = best_post)
+for com in comments:
+	print(com.datetime_comment_ad.strftime('%d-%m-%Y'),  com.user, com.raiting, com.text)
