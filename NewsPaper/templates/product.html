@@ -1,0 +1,20 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% load custom_tags %}
+<!-- Название у нас будет Product -->
+<!--
+Todo: + Сделать отдельную страницу для полной информации о статье /news/<id новости>.
+Todo: На этой странице должна быть вся информация о статье. Название, текст и дата загрузки в формате день.месяц.год.
+-->
+{% block title %}
+Product
+{% endblock title %}
+<!-- В контенте на странице мы выводим сам товар, идентификатор которого был передан в url -->
+{% block content %}
+<h1>{{ product.post_name }}</h1>
+{{ product.post_body}}
+<h3>{{product.datetime_in|use_time}}</h3>
+{% endblock content %}

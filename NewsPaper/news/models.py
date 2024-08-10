@@ -65,7 +65,7 @@ class Post(models.Model):
     # связь «один ко многим» с моделью Author;
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     # поле с выбором — «статья» или «новость»;
-    post_type = models.CharField(choices=POST_TYPE, max_length=255)
+    post_type = models.CharField(default="news", max_length=255)
     # автоматически добавляемая дата и время создания;
     datetime_in = models.DateTimeField(auto_now=True)
     # связь «многие ко многим» с моделью Category (с дополнительной моделью PostCategory);
@@ -95,6 +95,9 @@ class Post(models.Model):
         data = self.post_body
         return f'{data[0:124]}...'
 
+
+    def __str__(self):
+        return f'{self.post_name.title()}: {self.post_body[:20]}'
 
 class PostCategory(models.Model):
     # Промежуточная модель для связи «многие ко многим»:
